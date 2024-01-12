@@ -6,6 +6,8 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField]
     private float bulletSpeed = 500.0f;
+    [SerializeField]
+    private AudioSource bulletSound;
     private float bulletLifeTime = 10.0f;
 
     private Rigidbody2D bulletRBD;
@@ -28,6 +30,7 @@ public class Bullet : MonoBehaviour
         if (bulletRBD)
         {
             bulletRBD.AddForce(direction * this.bulletSpeed);
+            bulletSound.Play();
             Destroy(this.gameObject, this.bulletLifeTime);
         }
     }
