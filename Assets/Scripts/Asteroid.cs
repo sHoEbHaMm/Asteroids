@@ -40,4 +40,12 @@ public class Asteroid : MonoBehaviour
         asteroidRBD.AddForce(direction * moveSpeed);
         Destroy(this.gameObject, lifeTime);
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Bullet")
+        {
+            Destroy(this.gameObject);
+        }
+    }
 }
