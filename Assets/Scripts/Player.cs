@@ -9,15 +9,32 @@ public class Player : MonoBehaviour
     private float rotationSpeed = 1.0f;
     [SerializeField]
     private Bullet bulletPrefab;
+    [SerializeField]
+    private Sprite powerUpBullet;
+    [SerializeField]
+    private Sprite normyBullet;
+    [SerializeField]
+    private ParticleSystem ps_BurstPower;
+    [SerializeField]
+    private GameObject Shield;
 
     private bool bIsThrusting; //to check if player is trying to move forward
     private float turnDirection; //to check if player is trying to rotate
     private Rigidbody2D playerRBD;
 
+    [HideInInspector]
+    public bool bCanBurst = false;
+    [HideInInspector]
+    public bool isBursting = false;
+    [HideInInspector]
+    public int scoreMultiplier = 1;
+
     // Start is called before the first frame update
     void Start()
     {
         playerRBD = GetComponent<Rigidbody2D>();
+        this.gameObject.layer = LayerMask.NameToLayer("Player");
+        Shield.SetActive(false);
     }
 
     // Update is called once per frame
@@ -44,6 +61,15 @@ public class Player : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             Shoot();
+        }
+
+        if(bCanBurst == true && Input.GetKey(KeyCode.Space))
+        {
+            ps_BurstPower.transform.position = this.gameObject.transform.position;
+            bulletPrefab.GetComponent<SpriteRenderer>().sprite = powerUpBullet;
+            FindObjectOfType<GameManager>().ResetBar();
+            this.isBursting = true;
+            Invoke(nameof(ResetBullet), 15.0f);
         }
     }
 
@@ -84,7 +110,27 @@ public class Player : MonoBehaviour
 
             this.gameObject.SetActive(false);
 
-            FindObjectOfType<GameManager>().PlayerDied();
+            FindObjectOfType<GameManager>().PlayerDied();   
         }
+
+        if(collision.gameObject.tag == "Shield")
+        {
+            Shield.SetActive(true);
+            this.gameObject.layer = LayerMask.NameToLayer("IgnoreCollisions");
+            Destroy(collision.gameObject);
+            Invoke(nameof(DisableShield), 10);
+        }
+    }
+
+    private void ResetBullet()
+    {
+        bulletPrefab.GetComponent<SpriteRenderer>().sprite = normyBullet;
+        this.isBursting = false;
+        scoreMultiplier = 1;
+    }
+
+    private void DisableShield()
+    {
+        this.gameObject.layer = LayerMask.NameToLayer("Player");
     }
 }

@@ -7,6 +7,7 @@ TagManager:
   - Projectile
   - Bullet
   - Asteroid
+  - Shield
   layers:
   - Default
   - TransparentFX
@@ -18,8 +19,8 @@ TagManager:
   - Bullet
   - Boundary
   - Asteroid
-  - 
-  - 
+  - IgnoreCollisions
+  - Shield
   - 
   - 
   - 

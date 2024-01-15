@@ -50,7 +50,7 @@ public class Asteroid : MonoBehaviour
                 Split();
                 Split();
             }
-
+            FindObjectOfType<GameManager>().AsteroidDestroyed(this);
             Destroy(this.gameObject);
         }
     }
@@ -63,5 +63,10 @@ public class Asteroid : MonoBehaviour
         Asteroid half = Instantiate(this, position, this.transform.rotation);
         half.size = this.size * 0.5f;
         half.SetTrajectory(Random.insideUnitCircle.normalized * this.moveSpeed);
+    }
+
+    public void SelfDestruct()
+    {
+        Destroy(this.gameObject);
     }
 }
