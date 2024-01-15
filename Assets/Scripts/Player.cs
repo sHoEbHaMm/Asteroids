@@ -4,7 +4,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float moveSpeed = 1.0f;
+    private float moveSpeed = 2.0f;
     [SerializeField]
     private float rotationSpeed = 1.0f;
     [SerializeField]
@@ -73,5 +73,18 @@ public class Player : MonoBehaviour
     {
         Bullet bullet = Instantiate(this.bulletPrefab, this.transform.position, this.transform.rotation);
         bullet.Project(this.transform.up);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Asteroid")
+        {
+            playerRBD.velocity = Vector3.zero;
+            playerRBD.angularVelocity = 0.0f;
+
+            this.gameObject.SetActive(false);
+
+            FindObjectOfType<GameManager>().PlayerDied();
+        }
     }
 }

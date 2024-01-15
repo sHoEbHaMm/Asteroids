@@ -5,7 +5,7 @@ using UnityEngine;
 public class Asteroid : MonoBehaviour
 {
     [SerializeField]
-    private float moveSpeed = 50.0f;
+    private float moveSpeed = 5.0f;
 
     private float lifeTime = 30.0f;
 
@@ -37,7 +37,7 @@ public class Asteroid : MonoBehaviour
 
     public void SetTrajectory(Vector2 direction)
     {
-        asteroidRBD.AddForce(direction * moveSpeed);
+        asteroidRBD.AddForce(direction * this.moveSpeed);
         Destroy(this.gameObject, lifeTime);
     }
 
@@ -45,7 +45,23 @@ public class Asteroid : MonoBehaviour
     {
         if(collision.gameObject.tag == "Bullet")
         {
+            if(this.size * 0.5f >= this.minSize)
+            {
+                Split();
+                Split();
+            }
+
             Destroy(this.gameObject);
         }
+    }
+
+    private void Split()
+    {
+        Vector2 position = this.transform.position;
+        position += Random.insideUnitCircle * 0.5f;
+
+        Asteroid half = Instantiate(this, position, this.transform.rotation);
+        half.size = this.size * 0.5f;
+        half.SetTrajectory(Random.insideUnitCircle.normalized * this.moveSpeed);
     }
 }
