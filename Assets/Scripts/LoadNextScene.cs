@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Shield : MonoBehaviour
+using UnityEngine.SceneManagement;
+public class LoadNextScene : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(this.gameObject, 10);
+        Invoke(nameof(NextScene), 15);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void NextScene()
+    {
+        SceneManager.LoadScene(2);
     }
 }

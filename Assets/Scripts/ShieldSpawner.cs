@@ -23,7 +23,5 @@ public class ShieldSpawner : MonoBehaviour
         Vector3 spawnLocation = Random.insideUnitCircle.normalized * 3;
 
         Shield shield = Instantiate(shieldPrefab, spawnLocation, this.transform.rotation);
-
-        Destroy(this.gameObject, 10);
     }
 }
